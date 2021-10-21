@@ -21,7 +21,7 @@ config:
 - CSS files has been generated with Sass on VSCode
 
 ## Bootstrap Configuration
-- Since Bootstrap 5.0 JQuery its not longer necessary
+- Since Bootstrap 5.0 has been released then JQuery its not longer necessary
 - But might be used for some components
 
 ## Scripting
