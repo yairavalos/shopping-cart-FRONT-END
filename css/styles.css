@@ -1,0 +1,30 @@
+* {
+  padding: 0;
+  margin: 0;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+body {
+  background-color: #eeeef7;
+}
+
+header {
+  background-color: #201c53;
+  color: #fafafd;
+}
+
+main {
+  background-color: #eeeef7;
+}
+
+footer {
+  height: 70vh;
+  background-color: #c3c7eb;
+}
+
+footer li {
+  list-style: none;
+}
+/*# sourceMappingURL=styles.css.map */
