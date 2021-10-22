@@ -15,8 +15,17 @@ header {
   color: #fafafd;
 }
 
+header .nav-item .nav-link {
+  color: #fafafd;
+}
+
 main {
   background-color: #eeeef7;
+}
+
+main .card-header {
+  background-color: #c3c7eb;
+  color: #201c53;
 }
 
 footer {

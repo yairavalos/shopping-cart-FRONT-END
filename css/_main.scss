@@ -1,4 +1,9 @@
 
 main {
     background-color: $colorBackground;
+
+    .card-header{
+        background-color: $colorGray;
+        color: $colorNavy;
+    }
 }

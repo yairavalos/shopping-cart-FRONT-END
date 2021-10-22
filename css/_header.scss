@@ -2,4 +2,11 @@
 header {
     background-color: $colorNavy;
     color: $colorWhite;
+
+    .nav-item{
+        .nav-link{
+            color: $colorWhite;
+        }
+    }
+    
 }

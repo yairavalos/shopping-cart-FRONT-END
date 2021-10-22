@@ -59,83 +59,99 @@
       <div class="row lg-5">
         <div class="col-lg-6 col-md-8 mx-auto">
           <h1 class="fw-light">Product Catalog</h1>
-          <p class="lead text-muted">Feel free to review or catalog and choose that you are looking for</p>
-          <p>
-            <a href="#" class="btn btn-primary my-2">Go To Shopping Cart</a>
-          </p>
+          <p class="lead text-muted">Feel free to review or catalog and choose what you are looking for</p>
+
+        </div>
+      </div>
+      <div class="row lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+          <nav aria-label="...">
+            <ul class="pagination d-flex justify-content-center">
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item active" aria-current="page">
+                <a class="page-link" href="#">2</a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     </section>
 
 
-    <div class="album py-5 ">
+    <div class="album py-3 ">
       <div class="container">
 
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <!--CARD CONTAINER-->
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 justify-content-center">
 
-
+          <!--CARD Template including Responsivity-->
           <div class="col">
+
             <div class="card shadow-sm">
 
-              <img src="https://picsum.photos/225/295" class="bd-placeholder-img card-img-top" width="100%" height="225"
+              <div class="card-header text-center d-flex justify-content-between">
+                <div>
+                  <h6>Category: Safety</h6>
+                </div>
+                <div>
+                  <h6>Vendor: Kuka</h6>
+                </div>
+              </div>
+
+              <img src="https://picsum.photos/225/300" class="bd-placeholder-img card-img-top" width="100%" height="225"
                 alt="product image">
 
               <div class="card-body">
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
-                  content. This content is a little bit longer.</p>
+
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <h6 class="card-title d-inline-flex px-2">PN: SSRS-0001</h6>
+                  </div>
+                  <div>
+                    <h6 class="card-subtitle d-inline-flex px-2 mb-2 text-muted">$23,899.77 USD</h6>
+                  </div>
+                </div>
+                <hr>
+                <div>
+                  <div>
+                    <p class="card-text text-center">Vision Sensor for Optical Detection and Basic Processing</p>
+                  </div>
+                  <div class="text-center pt-3">
+                    <small class="text-muted">Stock: 9 piece(s) left, Hurry Up !!</small>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="card-footer">
+
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">
+                      <h5>+</h5>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">
+                      <h5>-</h5>
+                    </button>
+                    <small class="text-muted ms-3 pt-2">I want: 9 piece(s)</small>
                   </div>
-                  <small class="text-muted">9 mins</small>
+                  <div>
+                    <a href="#" class="btn btn-primary">Add to Cart</a>
+                  </div>
                 </div>
+
               </div>
+
             </div>
           </div>
-
-
-          <div class="col">
-            <div class="card shadow-sm">
-
-              <img src="https://picsum.photos/225/295" class="bd-placeholder-img card-img-top" width="100%" height="225"
-                alt="product image">
-
-              <div class="card-body">
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
-                  content. This content is a little bit longer.</p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                  </div>
-                  <small class="text-muted">9 mins</small>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-          <div class="col">
-            <div class="card shadow-sm">
-
-              <img src="https://picsum.photos/225/295" class="bd-placeholder-img card-img-top" width="100%" height="225"
-                alt="product image">
-
-              <div class="card-body">
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
-                  content. This content is a little bit longer.</p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                  </div>
-                  <small class="text-muted">9 mins</small>
-                </div>
-              </div>
-            </div>
-          </div>
-
+          <!--CARD Template including Responsivity-->
 
         </div>
       </div>
