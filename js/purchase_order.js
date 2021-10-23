@@ -58,11 +58,11 @@ const postAPIData = async(path, postData) => {
     try{
 
         const postResponse = await fetch(`${urlPath}`, {
-            method: "POST",
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=UTF-8',
             },
-            mode:"cors",
+            mode:'cors',
             body: JSON.stringify(postData)
         })
   
@@ -108,8 +108,17 @@ const retrievePurchaseData = async () => {
 
 const createPurchaseData = async (dataToPOST) => {
 
-    myJSonListCreate = await postAPIData("api/users/purchase_order/generate_job/", dataToPOST)
+    try{
+        myJSonListCreate = await postAPIData("api/users/purchase_order/generate_job/", dataToPOST)
 
+    } catch (error) {
+        console.log("createPurchaseData Error: ", error)
+    }  
+
+}
+
+function myTest(myParam){
+    console.log("Vengo de fuera y que ??...", myParam)
 }
 
 // Main Script

@@ -28,6 +28,10 @@ main .card-header {
   color: #201c53;
 }
 
+main .card-body .card_descrip {
+  height: 40px;
+}
+
 footer {
   height: 70vh;
   background-color: #c3c7eb;

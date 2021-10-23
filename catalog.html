@@ -63,20 +63,22 @@
 
         </div>
       </div>
+
+      <!--PAGINATION COMPONENTS-->
       <div class="row lg-5">
         <div class="col-lg-6 col-md-8 mx-auto">
           <nav aria-label="...">
-            <ul class="pagination d-flex justify-content-center">
+            <ul class="pagination d-flex justify-content-center" id="paginationContainer">
               <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true" id="prev">Previous</a>
               </li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#" id=1>1</a></li>
               <li class="page-item active" aria-current="page">
-                <a class="page-link" href="#">2</a>
+                <a class="page-link" href="#" id=2>2</a>
               </li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#" id=3>3</a></li>
               <li class="page-item">
-                <a class="page-link" href="#">Next</a>
+                <a class="page-link" href="#" id="next">Next</a>
               </li>
             </ul>
           </nav>
@@ -89,7 +91,7 @@
       <div class="container">
 
         <!--CARD CONTAINER-->
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 justify-content-center">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 justify-content-center" id="myCardContainer">
 
           <!--CARD Template including Responsivity-->
           <div class="col">
