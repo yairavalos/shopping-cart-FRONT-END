@@ -30,7 +30,7 @@
 </head>
 
 <body>
-  <header class="container-fluid ">
+  <header class="container-fluid">
 
     <div class="container">
       <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
@@ -42,10 +42,16 @@
         </a>
 
         <ul class="nav nav-pills">
-          <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>
+          <li class="nav-item"><a href="index.html" class="nav-link active" aria-current="page">Home</a></li>
           <li class="nav-item"><a href="#" class="nav-link">Catalog</a></li>
-          <li class="nav-item"><a href="#" class="nav-link">My Orders</a></li>
-          <li class="nav-item"><a href="#" class="nav-link">My Purchase</a></li>
+          <li class="nav-item">
+            <a href="shopping_cart.html" class="nav-link position-relative">My Purchase
+              <span class="position-absolute top-10 start-90 translate-middle badge rounded-pill bg-danger">
+                +
+              </span>
+            </a>
+          </li>
+          <li class="nav-item"><a href="purchase_order.html" class="nav-link">My Orders</a></li>
         </ul>
       </header>
     </div>
@@ -93,68 +99,27 @@
         <!--CARD CONTAINER-->
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 justify-content-center" id="myCardContainer">
 
-          <!--CARD Template including Responsivity-->
-          <div class="col">
+          <!--CARD Containers goes here !!-->
 
-            <div class="card shadow-sm">
 
-              <div class="card-header text-center d-flex justify-content-between">
-                <div>
-                  <h6>Category: Safety</h6>
-                </div>
-                <div>
-                  <h6>Vendor: Kuka</h6>
-                </div>
-              </div>
+        </div>
+      </div>
+    </div>
 
-              <img src="https://picsum.photos/225/300" class="bd-placeholder-img card-img-top" width="100%" height="225"
-                alt="product image">
-
-              <div class="card-body">
-
-                <div class="d-flex justify-content-between">
-                  <div>
-                    <h6 class="card-title d-inline-flex px-2">PN: SSRS-0001</h6>
-                  </div>
-                  <div>
-                    <h6 class="card-subtitle d-inline-flex px-2 mb-2 text-muted">$23,899.77 USD</h6>
-                  </div>
-                </div>
-                <hr>
-                <div>
-                  <div>
-                    <p class="card-text text-center">Vision Sensor for Optical Detection and Basic Processing</p>
-                  </div>
-                  <div class="text-center pt-3">
-                    <small class="text-muted">Stock: 9 piece(s) left, Hurry Up !!</small>
-                  </div>
-                </div>
-
-              </div>
-
-              <div class="card-footer">
-
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-outline-secondary">
-                      <h5>+</h5>
-                    </button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary">
-                      <h5>-</h5>
-                    </button>
-                    <small class="text-muted ms-3 pt-2">I want: 9 piece(s)</small>
-                  </div>
-                  <div>
-                    <a href="#" class="btn btn-primary">Add to Cart</a>
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
+    <div class="modal" tabindex="-1" id="myModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modal title</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <!--CARD Template including Responsivity-->
-
+          <div class="modal-body">
+            <p>Excelente se ha agregado al Carrito de Compras</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Seguir Comprando</button>
+            <button type="button" class="btn btn-primary">Vamos al Carrito de Compras</button>
+          </div>
         </div>
       </div>
     </div>

@@ -5,6 +5,11 @@ const API_URL = "http://localhost:8000/";
 let myJSonList = []
 let myPaginationContainer = document.getElementById("paginationContainer")
 let myCardContainer = document.getElementById("myCardContainer")
+let myJSONCart = []
+
+var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
+  keyboard: false
+})
 
 // Ajax Standard Retrieve Comms
 
@@ -78,14 +83,13 @@ const postAPIData = async(path, postData) => {
 }
 
 
-
 // Document Objects Printing Functions
 
 function createCard(jsonItem){
 
     myCard = document.createElement("div.col")
 
-    myCard.innerHTML = `<div class="card shadow-sm" id=${jsonItem.product.id} data-product_id= ${jsonItem.product.id}>
+    myCard.innerHTML = `<div class="card shadow-sm" id="myCard${jsonItem.product.id}" data-product_id= ${jsonItem.product.id}>
 
     <div class="card-header text-center d-flex justify-content-between">
       <div>
@@ -115,7 +119,7 @@ function createCard(jsonItem){
           <p class="card-text text-center card_descrip">${jsonItem.product.product_description}</p>
         </div>
         <div class="text-center pt-3">
-          <small class="text-muted">Stock: ${jsonItem.product_stock_qty} piece(s) left, Hurry Up !!</small>
+          <small class="text-muted">Stock: <strong>${jsonItem.product_stock_qty}</strong> piece(s) left, Hurry Up !!</small>
         </div>
       </div>
 
@@ -125,16 +129,12 @@ function createCard(jsonItem){
 
       <div class="d-flex justify-content-between align-items-center">
         <div class="btn-group">
-          <button type="button" class="btn btn-sm btn-outline-secondary">
-            <h5>+</h5>
-          </button>
-          <button type="button" class="btn btn-sm btn-outline-secondary">
-            <h5>-</h5>
-          </button>
-          <small class="text-muted ms-3 pt-2">I want: 9 piece(s)</small>
+          <button type="button" class="btn btn-sm btn-outline-secondary fs-3" data-btntype="plusBtn" data-product_id= ${jsonItem.product.id}>+</button>
+          <button type="button" class="btn btn-sm btn-outline-secondary fs-3" data-btntype="minusBtn" data-product_id= ${jsonItem.product.id}>-</button>
+          <small class="text-muted ms-3 pt-2">I want: <strong class="storeQty">0</strong> piece(s)</small>
         </div>
         <div>
-          <a href="#" class="btn btn-primary">Add to Cart</a>
+          <a href="#" class="btn btn-primary" data-btntype="addToCart" data-product_id= ${jsonItem.product.id}>Add to Cart</a>
         </div>
       </div>
 
@@ -156,8 +156,39 @@ function printCatalog(){
 
 const retrieveCatalogData = async () => {
 
-    myJSonList = await retrieveAPIData("api/shop/product_stock/")
-    printCatalog()
+  myJSonList = await retrieveAPIData("api/shop/product_stock/")
+  localStorage.setItem("catalog", JSON.stringify(myJSonList))
+  
+  printCatalog()
+
+}
+
+
+function generateJSON(stockInt, prodIdInt, prodQtyInt, jobInt = 0){
+
+  let myCount = 0
+
+  let jsonItem = {
+    "user_job": jobInt = 0,
+    "user_product":  prodIdInt,
+    "user_product_qty": prodQtyInt
+  }
+
+  for(let item of myJSONCart){
+    if(item.user_product == jsonItem.user_product){
+      myCount += 1
+
+      if((item.user_product_qty + jsonItem.user_product_qty) < stockInt){
+        item.user_product_qty += jsonItem.user_product_qty
+      }      
+    }
+  }
+
+  if(myCount == 0){
+    myJSONCart.push(jsonItem)
+  }
+
+  localStorage.setItem("ShoppingCart", JSON.stringify(myJSONCart))
 
 }
 
@@ -165,9 +196,54 @@ const retrieveCatalogData = async () => {
 
 myPaginationContainer.addEventListener("click", (event)=> {
 
-    console.log("Pagination Event detail: ", event)
-    console.log("Pagination Target is:", event.target)
-    console.log("Target id is: ", event.target.id)
+  event.preventDefault()
+  event.stopPropagation()
+
+  console.log("Pagination Event detail: ", event)
+  console.log("Pagination Target is:", event.target)
+  console.log("Target id is: ", event.target.id)
+
+})
+
+myCardContainer.addEventListener("click", (event) => {
+
+  event.preventDefault()
+  event.stopPropagation()
+
+  console.log("cardContainer Event detail: ", event)
+  console.log("Event Target is:", event.target)
+  console.log("Target dataset.product_id is: ", event.target.dataset.product_id)
+
+  if (event.target.dataset.btntype == 'minusBtn'){
+
+    myCard = myCardContainer.querySelector(`#myCard${event.target.dataset.product_id}`)
+    myQty = myCard.querySelector(".card-footer .storeQty")
+    
+    if(parseInt(myQty.innerText) >= 1){
+      myQty.innerText = parseInt(myQty.innerText) - 1
+    }    
+
+  } else if (event.target.dataset.btntype == 'plusBtn'){
+
+    myCard = myCardContainer.querySelector(`#myCard${event.target.dataset.product_id}`)
+    myQty = myCard.querySelector(".card-footer .storeQty")
+    myStock = myJSonList[event.target.dataset.product_id - 1].product_stock_qty
+
+    if(parseInt(myQty.innerText) < myStock){
+      myQty.innerText = parseInt(myQty.innerText) + 1
+    }
+
+  } else if (event.target.dataset.btntype == "addToCart") {
+
+    myCard = myCardContainer.querySelector(`#myCard${event.target.dataset.product_id}`)
+    myQty = myCard.querySelector(".card-footer .storeQty")
+    myStock = myJSonList[event.target.dataset.product_id - 1].product_stock_qty
+
+    generateJSON(myStock, event.target.dataset.product_id, parseInt(myQty.innerText))
+
+    //myModal.show()
+
+  }
 
 })
 

@@ -19,6 +19,10 @@ header .nav-item .nav-link {
   color: #fafafd;
 }
 
+header .nav-item .disabled {
+  color: #4554db;
+}
+
 main {
   background-color: #eeeef7;
 }
