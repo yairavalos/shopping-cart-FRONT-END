@@ -5,9 +5,8 @@ const API_URL = "http://localhost:8000/";
 
 // Store GET Response
 let myJSonList = []
-
-let myShoppingTable = document.getElementById("tablePOList")
-let myGrandTotal = 0
+// Store POST Response
+let myJSonListCreate = []
 
 // Ajax Standard Retrieve Comms
 
@@ -49,7 +48,6 @@ const retrieveAPIData = async(path, queryParam = "") => {
 
 }
 
-
 // Ajax Standard Post-Create Comms
 
 const postAPIData = async(path, postData) => {
@@ -88,45 +86,46 @@ const postAPIData = async(path, postData) => {
     }
 }
 
-function createListItem(posInt, jsonItem){
+function generateJSON (userInt, statusInt, dateStr) {
 
-    let myRowItem = document.createElement("tr")
-    
-    myRowItem.innerHTML = 
-        `<th scope="row">${posInt}</th>
-        <td>${jsonItem.user_profile.username}</td>
-        <td>Job ${jsonItem.id}</td>
-        <td>${jsonItem.user_job_status.process_step}</td>
-        <td>${jsonItem.user_job_purchase_date}</td>
-        <td>${jsonItem.user_job_delivery_date}</td>`
-
-    return myRowItem
-
-}
-
-
-function printPOList(){
-
-    let counter = 0
-
-    for(let jsonItem of myJSonList){
-        counter += 1
-        myShoppingTable.append(createListItem(counter, jsonItem))
+    let myJSonDict = {
+        "user_profile": userInt,
+        "user_job_status": statusInt,
+        "user_job_delivery_date": dateStr
     }
-    
+
+    return myJSonDict
+
 }
+
+// Document Objects Printing Functions
 
 const retrievePurchaseData = async () => {
 
-    myJSonList = await retrieveAPIData("api/users/purchase_order/", "3")
-    printPOList()
-    
+    myJSonList = await retrieveAPIData("api/users/purchase_order/", "1")
+
 }
 
+const createPurchaseData = async (dataToPOST) => {
+
+    try{
+        myJSonListCreate = await postAPIData("api/users/purchase_order/generate_job/", dataToPOST)
+
+    } catch (error) {
+        console.log("createPurchaseData Error: ", error)
+    }  
+
+}
+
+function myTest(myParam){
+    console.log("Vengo de fuera y que ??...", myParam)
+}
+
+// Main Script
 
 window.addEventListener("load", () => {
 
     retrievePurchaseData()
-    
+
 })
 

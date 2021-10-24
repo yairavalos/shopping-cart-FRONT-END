@@ -3,8 +3,11 @@
 
 const API_URL = "http://localhost:8000/";
 
-let myCatalog = []
-let myShoppingCart = []
+let myCatalog = JSON.parse(localStorage.catalog)
+let myShoppingCart = JSON.parse(localStorage.ShoppingCart)
+
+let myShoppingTable = document.getElementById("tableShoppingList")
+let myGrandTotal = 0
 
 // Ajax Standard Retrieve Comms
 
@@ -77,17 +80,54 @@ const postAPIData = async(path, postData) => {
     }
 }
 
+function createListItem(posInt, jsonItem, qtyInt){
+
+    let myRowItem = document.createElement("tr")
+    
+    myRowItem.innerHTML = 
+    `<th scope="row">${posInt}</th>
+        <td>${jsonItem.product.product_vendor.vendor_company_name}</td>
+        <td>${jsonItem.product.product_part_number}</td>
+        <td>${jsonItem.product.product_description}</td>
+        <td>$ ${jsonItem.product.product_unit_price} usd</td>
+        <td>${qtyInt}</td>
+        <td>$ ${jsonItem.product.product_unit_price * qtyInt} usd</td>`
+
+    myGrandTotal += jsonItem.product.product_unit_price * qtyInt
+
+    return myRowItem
+
+}
 
 
-// print data
+function printShoppingList(){
 
-// load data
+    let counter = 0
+
+    for(let catalogItem of myCatalog){
+        //console.log("catalogItem", catalogItem)
+        for(let shoppingItem of myShoppingCart){
+            //console.log("shoppingItem", shoppingItem)
+            if(catalogItem.product.id == shoppingItem.user_product){
+                counter += 1
+                myItem = createListItem(counter, catalogItem, shoppingItem.user_product_qty)
+                console.log("myRowItem", myItem )
+                myShoppingTable.append(myItem)
+            }
+        }
+    }
+
+    document.querySelector("table").querySelector("#grandTotal").innerText = `$ ${myGrandTotal} usd`
+
+}
+
 
 window.addEventListener("load", () => {
 
     myCatalog = JSON.parse(localStorage.catalog)
     myShoppingCart = JSON.parse(localStorage.ShoppingCart)
 
+    printShoppingList()
 })
 
 
