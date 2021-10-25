@@ -7,10 +7,6 @@ let myPaginationContainer = document.getElementById("paginationContainer")
 let myCardContainer = document.getElementById("myCardContainer")
 let myJSONCart = []
 
-var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
-  keyboard: false
-})
-
 // Ajax Standard Retrieve Comms
 
 const retrieveAPIData = async(path) => {
@@ -164,12 +160,11 @@ const retrieveCatalogData = async () => {
 }
 
 
-function generateJSON(stockInt, prodIdInt, prodQtyInt, jobInt = 0){
+function generateJSON(stockInt, prodIdInt, prodQtyInt){
 
   let myCount = 0
 
   let jsonItem = {
-    "user_job": jobInt = 0,
     "user_product":  prodIdInt,
     "user_product_qty": prodQtyInt
   }
@@ -214,19 +209,17 @@ myCardContainer.addEventListener("click", (event) => {
   console.log("Event Target is:", event.target)
   console.log("Target dataset.product_id is: ", event.target.dataset.product_id)
 
+  myCard = myCardContainer.querySelector(`#myCard${event.target.dataset.product_id}`)
+  myQty = myCard.querySelector(".card-footer .storeQty")
+
   if (event.target.dataset.btntype == 'minusBtn'){
 
-    myCard = myCardContainer.querySelector(`#myCard${event.target.dataset.product_id}`)
-    myQty = myCard.querySelector(".card-footer .storeQty")
-    
     if(parseInt(myQty.innerText) >= 1){
       myQty.innerText = parseInt(myQty.innerText) - 1
     }    
 
   } else if (event.target.dataset.btntype == 'plusBtn'){
 
-    myCard = myCardContainer.querySelector(`#myCard${event.target.dataset.product_id}`)
-    myQty = myCard.querySelector(".card-footer .storeQty")
     myStock = myJSonList[event.target.dataset.product_id - 1].product_stock_qty
 
     if(parseInt(myQty.innerText) < myStock){
@@ -235,13 +228,8 @@ myCardContainer.addEventListener("click", (event) => {
 
   } else if (event.target.dataset.btntype == "addToCart") {
 
-    myCard = myCardContainer.querySelector(`#myCard${event.target.dataset.product_id}`)
-    myQty = myCard.querySelector(".card-footer .storeQty")
     myStock = myJSonList[event.target.dataset.product_id - 1].product_stock_qty
-
     generateJSON(myStock, event.target.dataset.product_id, parseInt(myQty.innerText))
-
-    //myModal.show()
 
   }
 
