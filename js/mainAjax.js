@@ -55,3 +55,9 @@ const postAPIData = async(path, postData) => {
     }
 }
 
+
+window.addEventListener("load", () => {
+
+    localStorage.clear()
+
+})

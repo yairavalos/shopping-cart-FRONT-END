@@ -61,7 +61,8 @@
           <h1 class="fw-light">Shopping Cart</h1>
           <p class="lead text-muted">Thanks for choose us, please review your product items</p>
           <p>
-            <a href="#" class="btn btn-primary my-2">Confirm my Purchase</a>
+            <a href="./catalog.html" class="btn btn-secondary my-2">Keep Buying from Catalog</a>
+            <a href="#" class="btn btn-primary my-2" id="generatePO">Confirm my Purchase</a>
           </p>
         </div>
       </div>
@@ -99,7 +100,7 @@
                 <td><strong>Grand Total ---></strong></td>
                 <td></td>
                 <td></td>
-                <td><strong id="grandTotal">$91,011.99</strong></td>
+                <td><strong id="grandTotal">$ 0.00 usd</strong></td>
               </tr>
             </tfoot>
           </table>
@@ -108,6 +109,23 @@
 
       </div>
 
+    </div>
+
+    <div class="modal" tabindex="-1" id="myModal" data-bs-backdrop="static">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Confirmando tu Compra !!!</h5>
+          </div>
+          <div class="modal-body">
+            <p class="message-status">Estamos validando tus datos, por favor espera.</p>
+          </div>
+          <div class="modal-footer">
+            <a href="#" class="btn btn-secondary d-none" data-bs-dismiss="modal">Regresar</a>
+            <a href="./purchase_order.html" class="btn btn-primary d-none">Continuar</a>
+          </div>
+        </div>
+      </div>
     </div>
 
   </main>

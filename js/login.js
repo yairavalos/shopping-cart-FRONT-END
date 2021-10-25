@@ -116,14 +116,14 @@ const generateUserLogin = async() => {
         } else {
             myModal._dialog.querySelector(".btn-primary").classList.value = "btn btn-primary d-none"
             myModal._dialog.querySelector(".btn-secondary").classList.value = "btn btn-secondary"
-            myModal._dialog.querySelector(".message-status").innerText = "Algo salio mal por favor revisa tus datos"
+            myModal._dialog.querySelector(".message-status").innerText = "Algo salio mal por favor revisa tus datos o tu conexión"
             console.log("generateUserLogin() Status is not OK")
         }
 
     } catch (error) {
         myModal._dialog.querySelector(".btn-primary").classList.value = "btn btn-primary d-none"
         myModal._dialog.querySelector(".btn-secondary").classList.value = "btn btn-secondary"
-        myModal._dialog.querySelector(".message-status").innerText = "Algo salio mal por favor revisa tus datos"
+        myModal._dialog.querySelector(".message-status").innerText = "Algo salio mal por favor revisa tus datos o tu conexión"
         console.log("generateUserLogin() Error: ", error)
     }
 }

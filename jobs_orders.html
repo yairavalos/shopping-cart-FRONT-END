@@ -42,10 +42,10 @@
         </a>
 
         <ul class="nav nav-pills">
-          <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>
-          <li class="nav-item"><a href="#" class="nav-link disabled">Catalog</a></li>
-          <li class="nav-item"><a href="#" class="nav-link disabled">My Purchase</a></li>
-          <li class="nav-item"><a href="#" class="nav-link disabled">My Orders</a></li>
+          <li class="nav-item"><a href="index.html" class="nav-link active" aria-current="page">Home</a></li>
+          <li class="nav-item"><a href="catalog.html" class="nav-link">Catalog</a></li>
+          <li class="nav-item"><a href="shopping_cart.html" class="nav-link">My Purchase</a></li>
+          <li class="nav-item"><a href="#" class="nav-link">My Orders</a></li>
         </ul>
       </header>
     </div>
@@ -55,25 +55,46 @@
 
   <main>
 
-    <div class="row">
-
-      <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg align-items-center g-5 py-5">
-          <div class="col-10 col-sm-8 col-lg-6">
-            <img
-              src="https://www.kepware.com/getattachment/blog/2019/Learning-from-the-Business-Values-of-Connectivity/ARC-paper-550x400-(1).jpg"
-              class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-5 fw-bold lh-1 mb-3">Industrial Automation Catalog</h1>
-            <p class="lead">Welcome to the most extensive and useful catalof of industrial components for Industrial
-              Automation integrations just ready to be shipped. Please enter and see how much you can achieve.</p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a href="./signup.html" class="btn btn-primary btn-lg px-4 me-md-2">Signup</a>
-              <a href="./login.html" class="btn btn-outline-secondary btn-lg px-4">Login</a>
-            </div>
-          </div>
+    <section class=" text-center container">
+      <div class="row lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+          <h1 class="fw-light">Purchase Orders</h1>
+          <p class="lead text-muted">Thanks for choose us, please review your purchase orders</p>
+          <p>
+            <a href="#" class="btn btn-primary my-2">Go To Shopping Cart</a>
+          </p>
         </div>
+      </div>
+    </section>
+
+
+    <div class="container py-5">
+
+      <div class="row">
+
+        <div class="col">
+
+          <table class="table table-striped">
+            <thead class="table-success">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Username</th>
+                <th scope="col">Job Order Id</th>
+                <th scope="col">Job Order Status</th>
+                <th scope="col">PO Issue Date</th>
+                <th scope="col">PO Delivery</th>
+
+              </tr>
+            </thead>
+            <tbody id="tablePOList">
+
+              <!--Retrieved PO Data Goes Here-->
+
+            </tbody>
+          </table>
+
+        </div>
+
       </div>
 
     </div>
@@ -92,8 +113,7 @@
     crossorigin="anonymous "></script>
 
   <!--Local Web Page Scripts-->
-  <script src="./js/mainAjax.js"></script>
-
+  <script src="./js/purchase_order.js"></script>
 </body>
 
 </html>

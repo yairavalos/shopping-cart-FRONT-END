@@ -1,13 +1,18 @@
 
 // Variables Declaration that are Global
-
 const API_URL = "http://localhost:8000/";
+let myGrandTotal = 0
 
+// Local Storage Retrieve
 let myCatalog = JSON.parse(localStorage.catalog)
 let myShoppingCart = JSON.parse(localStorage.ShoppingCart)
 
+// DOM Manipulation
+let btnPO = document.getElementById("generatePO")
 let myShoppingTable = document.getElementById("tableShoppingList")
-let myGrandTotal = 0
+var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
+    keyboard: false
+  })
 
 // Ajax Standard Retrieve Comms
 
@@ -48,6 +53,7 @@ const postAPIData = async(path, postData) => {
 
     let urlPath = API_URL + path
     console.log("postAPIData() connecting to: ", urlPath)
+    console.log("postAPIData() posting this: ", postData)
 
     try{
 
@@ -65,8 +71,8 @@ const postAPIData = async(path, postData) => {
             const dataResult = await postResponse.json()
             console.log("Response status is: ", postResponse.status)
             console.log("Response data is: " , dataResult)
-    
-            myJSonListCreate = dataResult
+
+            dataResult["status"] = postResponse.statusText
 
             return dataResult
 
@@ -79,6 +85,7 @@ const postAPIData = async(path, postData) => {
         console.log("postResponse Status: ", postResponse.statusText)
     }
 }
+
 
 function createListItem(posInt, jsonItem, qtyInt){
 
@@ -121,6 +128,53 @@ function printShoppingList(){
 
 }
 
+const generateUserPO = async() => {
+
+    try{
+
+        let myJSonJob = {
+            user_profile: parseInt(localStorage.userID),
+            user_job_status: 1 
+        }
+
+        jobResponse = await postAPIData("api/users/purchase_order/generate_job/", myJSonJob)
+        console.log("generateUserPO() Status: ", jobResponse.status)
+
+        if(jobResponse.status == "Created"){
+
+            localStorage.setItem("userJobID", jobResponse.id)
+
+            myModal._dialog.querySelector(".btn-secondary").classList.value = "btn btn-secondary d-none"
+            myModal._dialog.querySelector(".btn-primary").classList.value = "btn btn-primary"
+            myModal._dialog.querySelector(".message-status").innerText = `Excelente Job ID: ${jobResponse.id} se ha generado !!!`
+
+        } else {
+            myModal._dialog.querySelector(".btn-primary").classList.value = "btn btn-primary d-none"
+            myModal._dialog.querySelector(".btn-secondary").classList.value = "btn btn-secondary"
+            myModal._dialog.querySelector(".message-status").innerText = "Algo salio mal por favor revisa tus datos o tu conexión"
+            console.log("generateUserPO() Status is not OK")
+        }
+
+    } catch (error) {
+        myModal._dialog.querySelector(".btn-primary").classList.value = "btn btn-primary d-none"
+        myModal._dialog.querySelector(".btn-secondary").classList.value = "btn btn-secondary"
+        myModal._dialog.querySelector(".message-status").innerText = "Algo salio mal por favor revisa tus datos o tu conexión"
+        console.log("generateUserPO() Error: ", error)
+    }
+}
+
+
+
+btnPO.addEventListener("click", (event) => {
+
+    //event.preventDefault()
+    //event.stopPropagation()
+    //event.stopImmediatePropagation()
+
+    //myModal.show()
+    generateUserPO()
+
+})
 
 window.addEventListener("load", () => {
 

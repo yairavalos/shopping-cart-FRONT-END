@@ -118,9 +118,9 @@ function printPOList(){
 
 const retrievePurchaseData = async () => {
 
-    myJSonList = await retrieveAPIData("api/users/purchase_order/", localStorage.userID)
+    myJSonList = await retrieveAPIData("api/users/purchase_order/", "3")
     printPOList()
-
+    
 }
 
 
