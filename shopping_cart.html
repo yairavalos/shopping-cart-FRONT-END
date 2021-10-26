@@ -45,7 +45,7 @@
           <li class="nav-item"><a href="index.html" class="nav-link active" aria-current="page">Home</a></li>
           <li class="nav-item"><a href="catalog.html" class="nav-link">Catalog</a></li>
           <li class="nav-item"><a href="#" class="nav-link">My Purchase</a></li>
-          <li class="nav-item"><a href="purchase_order.html" class="nav-link">My Orders</a></li>
+          <li class="nav-item"><a href="jobs_orders.html" class="nav-link">My Orders</a></li>
         </ul>
       </header>
     </div>
@@ -55,14 +55,15 @@
 
   <main>
 
-    <section class=" text-center container">
-      <div class="row lg-5">
+    <section class=" text-center container" id="containerMsg">
+
+      <div class="row lg-5" id="containerMsg">
         <div class="col-lg-6 col-md-8 mx-auto">
           <h1 class="fw-light">Shopping Cart</h1>
           <p class="lead text-muted">Thanks for choose us, please review your product items</p>
           <p>
             <a href="./catalog.html" class="btn btn-secondary my-2">Keep Buying from Catalog</a>
-            <a href="#" class="btn btn-primary my-2" id="generatePO">Confirm my Purchase</a>
+            <a href="./purchase_order.html" class="btn btn-primary my-2" id="generatePO">Confirm my Purchase</a>
           </p>
         </div>
       </div>
@@ -81,24 +82,6 @@
             d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
         </symbol>
       </svg>
-
-      <div class="alert alert-success d-flex align-items-center" role="alert" id="successMsg">
-        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
-          <use xlink:href="#check-circle-fill" />
-        </svg>
-        <div id="successText">
-          An example success alert with an icon
-        </div>
-      </div>
-
-      <div class="alert alert-primary d-flex align-items-center" role="alert" id="alertMsg">
-        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:">
-          <use xlink:href="#exclamation-triangle-fill" />
-        </svg>
-        <div id="alertText">
-          An example warning alert with an icon
-        </div>
-      </div>
 
     </section>
 

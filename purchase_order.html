@@ -58,11 +58,8 @@
     <section class=" text-center container">
       <div class="row lg-5">
         <div class="col-lg-6 col-md-8 mx-auto">
-          <h1 class="fw-light">Purchase Orders</h1>
-          <p class="lead text-muted">Thanks for choose us, please review your purchase orders</p>
-          <p>
-            <a href="#" class="btn btn-primary my-2">Go To Shopping Cart</a>
-          </p>
+          <h1 class="fw-light">Purchase Order</h1>
+          <p class="lead text-muted">Thanks for your preference this is your Purchase Order Receipt</p>
         </div>
       </div>
     </section>
@@ -72,25 +69,53 @@
 
       <div class="row">
 
+        <div class="col col-lg-4 col-md-4">
+
+          <table class="table" id="tablePO">
+            <thead class="table-success">
+              <tr>
+                <td scope="col">#</td>
+                <td scope="col">PO Description</td>
+              </tr>
+            </thead>
+          </table>
+
+        </div>
+
+      </div>
+
+      <div class="row py-5">
+
         <div class="col">
 
           <table class="table table-striped">
             <thead class="table-success">
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Username</th>
-                <th scope="col">Job Order Id</th>
-                <th scope="col">Job Order Status</th>
-                <th scope="col">PO Issue Date</th>
-                <th scope="col">PO Delivery</th>
-
+                <th scope="col">Vendor</th>
+                <th scope="col">Part Number</th>
+                <th scope="col">Description</th>
+                <th scope="col">Unit Price (USD)</th>
+                <th scope="col">Qty</th>
+                <th scope="col">Subtotal</th>
               </tr>
             </thead>
-            <tbody id="tablePOList">
+            <tbody id="tableShoppingList">
 
-              <!--Retrieved PO Data Goes Here-->
+              <!--BOM Data Goes Here-->
 
             </tbody>
+            <tfoot class="table-info">
+              <tr>
+                <th scope="row"></th>
+                <td></td>
+                <td></td>
+                <td><strong>Grand Total ---></strong></td>
+                <td></td>
+                <td></td>
+                <td><strong id="grandTotal">$ 0.00 usd</strong></td>
+              </tr>
+            </tfoot>
           </table>
 
         </div>

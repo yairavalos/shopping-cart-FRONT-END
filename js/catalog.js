@@ -5,7 +5,9 @@ const API_URL = "http://localhost:8000/";
 let myJSonList = []
 let myPaginationContainer = document.getElementById("paginationContainer")
 let myCardContainer = document.getElementById("myCardContainer")
-let myJSONCart = []
+
+let myJSONCart = localStorage.ShoppingCart ? JSON.parse(localStorage.ShoppingCart) : []
+
 
 // Ajax Standard Retrieve Comms
 

@@ -9,9 +9,7 @@ let myCatalog = JSON.parse(localStorage.catalog)
 let myShoppingCart = JSON.parse(localStorage.ShoppingCart)
 
 // DOM Manipulation
-let btnPO = document.getElementById("generatePO")
-let successMsg = document.getElementById("successMsg")
-let alertMsg = document.getElementById("alertMsg")
+let myContainerMsg = document.getElementById("containerMsg")
 let myShoppingTable = document.getElementById("tableShoppingList")
 
 // Modal -> On-hold !!
@@ -80,24 +78,60 @@ const postAPIData = async(path, postData) => {
             body: JSON.stringify(postData)
         })
   
-        if (postResponse.ok) {
+        console.log("postResponse Fetch in progress ....")
+        //if (postResponse.ok) {  // No hay un issue aquí ??
 
-            const dataResult = await postResponse.json()
-            console.log("Response status is: ", postResponse.status)
-            console.log("Response data is: " , dataResult)
+        const dataResult = await postResponse.json()
+        console.log("Response status is: ", postResponse.status)
+        console.log("Response data is: " , dataResult)
 
-            dataResult["status"] = postResponse.statusText
+            //dataResult["status"] = postResponse.statusText // No hay un issue aquí ??
 
-            return dataResult
+        return dataResult
 
-        } else {
+        //} else {
             console.log("POST Response its NOT ok", postResponse.statusText)
-        }
+        //}
 
     } catch (error) {
         console.log("Error from postAPIData: ", error)
         console.log("postResponse Status: ", postResponse.statusText)
     }
+}
+
+
+function createAlertMsgItem(){
+    
+    myMsgItem = document.createElement("div")
+    myMsgItem.innerHTML = 
+    `<div class="alert alert-primary d-flex align-items-center" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:">
+            <use xlink:href="#exclamation-triangle-fill" />
+        </svg>
+        <div>
+            An example warning alert with an icon
+        </div>
+    </div>`
+
+    myContainerMsg.append(myMsgItem)
+}
+
+
+function createSucessMsgItem(msgText){
+
+    myMsgItem = document.createElement("div")
+    myMsgItem.innerHTML = 
+    `<div class="alert alert-success d-flex align-items-center" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+            <use xlink:href="#check-circle-fill" />
+        </svg>
+        <div>
+            ${msgText}
+        </div>
+    </div>`
+
+    myContainerMsg.append(myMsgItem)
+
 }
 
 
@@ -150,48 +184,19 @@ const retrieveUserPO = async() => {
         jobResponse = await retrieveAPIData("api/users/purchase_order/", `?ordering=-id&search=${localStorage.userID}`)
         localStorage.setItem("userJobID", jobResponse[0].id)
         
-        successMsgFunc(`Retrieved PO with Job Id is: ${localStorage.userJobID}`)
+        createSucessMsgItem(`Retrieved PO with Job Id is: ${localStorage.userJobID}`)
 
     } catch (error) {
         console.log("retrieveUserPO() Error: ", console.error())
-        alertMsgFunc(`Retrieve PO Error is: ${error.message}`)
+        createAlertMsgItem(`Retrieve PO Error is: ${error.message}`)
     }    
 
 }
 
 
-const generateUserBOM = async() => {
-
-    try {
-
-        if(localStorage.userJobID && localStorage.POStatus){
-
-            for(let itemBOM of myShoppingCart){
-                itemBOM["user_job"] = parseInt(localStorage.userJobID)
-                itemBOM.user_product = parseInt(itemBOM.user_product) 
-            }
-        
-            bomResponse = await postAPIData("api/users/shopping_cart/generate_bom/", myShoppingCart)
-            console.log("generateUserBOM() Status: ", bomResponse.status)
-
-            if(jobResponse.status == "Created"){
-                successMsgFunc(`Generated PO with Job Id is: ${localStorage.userJobID} with ${ShoppingCart.length}`)
-            } else {
-                alertMsgFunc("generateUserBOM() last Status is NOT created")
-            }
-
-        }
-
-    } catch (error) {
-
-        console.log("generateUserBOM() Error: ", error)
-        alertMsgFunc("generateUserBOM() Error")
-    }
-
-}
-
-
 const generateUserPO = async() => {
+
+    localStorage.setItem("POStatus","Launched")
 
     try{
 
@@ -203,79 +208,51 @@ const generateUserPO = async() => {
         jobResponse = await postAPIData("api/users/purchase_order/generate_job/", myJSonJob)
         console.log("generateUserPO() Status: ", jobResponse.status)
 
-        if(jobResponse.status == "Created"){
+        if(jobResponse.length > 0){
 
             localStorage.setItem("userJobID", jobResponse.id)
-            successMsgFunc(`Generated PO with Job Id is: ${localStorage.userJobID}`)
+            createSucessMsgItem(`Generated PO with Job Id is: ${localStorage.userJobID}`)
 
         } else {
             console.log("generateUserPO() Status is not OK")
-            alertMsgFunc("Response status is not OK")
+            createAlertMsgItem("Response status is not OK")
         }
 
     } catch (error) {
         console.log("generateUserPO() Error: ", error)
-        alertMsgFunc(error.message)
+        createAlertMsgItem(error.message)
     }
 }
 
-function disabledMsgFunc(){
 
-    successMsg.classList.value = "d-none"
-    alertMsg.classList.value = "d-none"
-
-}
-
-function successMsgFunc(textOK){
-
-    alertMsg.classList.value = "d-none"
-    successMsg.classList.value = "alert alert-success d-flex align-items-center"
-    successMsg.querySelector("#successText").innerText = `Transaction was successfuly done with: ${textOK}`
-
-}
-
-function alertMsgFunc(textError){
-
-    successMsg.classList.value = "d-none"
-    alertMsg.classList.value = "alert alert-primary d-flex align-items-center"
-    alertMsg.querySelector("#alertText").innerText = `Some problem was found Error: ${textError} , please refresh your page`
-
-}
-
-
-btnPO.addEventListener("click", (event) => {
+window.addEventListener("load", (event) => {
 
     event.preventDefault()
 
-    generateUserBOM()    
-
-})
-
-
-window.addEventListener("load", () => {
-
-    disabledMsgFunc()
-
-    myCatalog = JSON.parse(localStorage.catalog)
-    myShoppingCart = JSON.parse(localStorage.ShoppingCart)
-
-    printShoppingList()
-
-    if(!localStorage.userJobID && !localStorage.POStatus){
+    try{
+        myCatalog = JSON.parse(localStorage.catalog)
+        myShoppingCart = JSON.parse(localStorage.ShoppingCart)
+    
+        printShoppingList()
+    
+    
+        if(!localStorage.userJobID && !localStorage.POStatus){
+    
+            generateUserPO()
+    
+        } else if (!localStorage.userJobID && localStorage.POStatus == "Launched") {
+            
+            retrieveUserPO()
         
-        localStorage.setItem("POStatus","Launched")
-
-        generateUserPO()
-
-    } else if (!localStorage.userJobID && localStorage.POStatus == "Launched") {
-
-        retrieveUserPO()
-
-    } else if (localStorage.userJobID && localStorage.POStatus) {
-
-        successMsgFunc(`Stored PO Job Id is: ${localStorage.userJobID}`)
-
-    }
+        } else if (localStorage.userJobID && localStorage.POStatus) {
+    
+            createSucessMsgItem(`Stored PO Job Id is: ${localStorage.userJobID}`)
+    
+        }
+    
+    } catch (error) {
+        console.log("Window Error Messagage: ", error)
+    }    
 
 })
 
