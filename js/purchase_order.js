@@ -75,23 +75,17 @@ const postAPIData = async(path, postData) => {
             body: JSON.stringify(postData)
         })
   
-        //if (postResponse.ok) {
+        console.log("postResponse Fetch in progress ....")
 
-            const dataResult = await postResponse.json()
-            console.log("Response status is: ", postResponse.status)
-            console.log("Response data is: " , dataResult)
-
-            dataResult["status"] = postResponse.statusText
-
-            return dataResult
-
-        //} else {
-          //  console.log("POST Response its NOT ok", postResponse.statusText)
-        //}
+        const dataResult = await postResponse.json()
+        console.log("Response status is: ", postResponse.status)
+        console.log("Response data is: " , dataResult)
+       
+        return dataResult
 
     } catch (error) {
         console.log("Error from postAPIData: ", error)
-        console.log("postResponse Status: ", postResponse.statusText)
+        return false
     }
 }
 
@@ -190,37 +184,48 @@ function printShoppingList(){
 
 }
 
+const retrieveUserBOM = async() => {
+
+    try{
+
+        bomResponse = await retrieveAPIData("api/users/purchase_order/", `?ordering=-id&search=${localStorage.userID}`)
+        localStorage.setItem("userJobID", jobResponse[0].id)
+        
+        createSucessMsgItem(`Retrieved PO with Job Id is: ${localStorage.userJobID}`)
+
+    } catch (error) {
+        console.log("retrieveUserPO() Error: ", console.error())
+        createAlertMsgItem(`Retrieve PO Error is: ${error.message}`)
+    }    
+
+}
+
 
 const generateUserBOM = async() => {
 
     localStorage.setItem("BOMStatus","Launched")
 
-    try {
-
-        if(localStorage.userJobID && localStorage.POStatus){
-
-            for(let itemBOM of myShoppingCart){
-                itemBOM["user_job"] = parseInt(localStorage.userJobID)
-                itemBOM.user_product = parseInt(itemBOM.user_product) 
-            }
+    if(localStorage.userJobID && localStorage.POStatus){
         
-            bomResponse = await postAPIData("api/users/shopping_cart/generate_bom/", myShoppingCart)
-            console.log("generateUserBOM() Status: ", bomResponse.status)
+        for(let itemBOM of myShoppingCart){
+            itemBOM["user_job"] = parseInt(localStorage.userJobID)
+            itemBOM.user_product = parseInt(itemBOM.user_product) 
+        }
+    
+        bomResponse = await postAPIData("api/users/shopping_cart/generate_bom/", myShoppingCart)
 
-            if(jobResponse.status == "Created"){
-                createSucessMsgItem(`Generated PO with Job Id is: ${localStorage.userJobID} with ${ShoppingCart.length}`)
-            } else {
-                createAlertMsgItem("generateUserBOM() last Status is NOT created")
-            }
+        if(!bomResponse == false){
+            createSucessMsgItem(`Generated PO with Job Id is: ${localStorage.userJobID} with ${ShoppingCart.length}`)
+            return true
 
         } else {
-            console.log("generateUserBOM() couldn´t complete operation, check if conditions")
+            createAlertMsgItem("generateUserBOM() last Status is NOT created")
+            return false
         }
 
-    } catch (error) {
-
-        console.log("generateUserBOM() Error: ", error)
-        createAlertMsgItem("generateUserBOM() Error")
+    } else {
+        console.log("generateUserBOM() couldn´t complete operation, check if conditions")
+        return false
     }
 
 }
@@ -228,22 +233,19 @@ const generateUserBOM = async() => {
 
 window.addEventListener("load", (event) => {
 
-    event.preventDefault()
+    let statusPO
 
-    try{
-        myCatalog = JSON.parse(localStorage.catalog)
-        myShoppingCart = JSON.parse(localStorage.ShoppingCart)
+    myCatalog = JSON.parse(localStorage.catalog)
+    myShoppingCart = JSON.parse(localStorage.ShoppingCart)
 
-        if(!localStorage.BOMStatus){
-            generateUserBOM()
-        }
-        
+    if(!localStorage.BOMStatus){
+        statusPO = generateUserBOM()
+    }
+
+    if(!statusPO){
         createPOHeader()
         printShoppingList()
-    
-    } catch (error) {
-        console.log("Window Error Messgage: ", error)
-    }    
+    }
 
 })
 
@@ -255,3 +257,5 @@ window.addEventListener("load", (event) => {
 // Manual trigger if something fails
 // Do a 2nd shoot for a retrieval just in case post fetch its cancelled
 // Use flags to control page states, specially to run just the first time C.I.
+// Avoid try/catch chaining instead contain behavior and handle messages
+// Use try/catch over things you don´t have control

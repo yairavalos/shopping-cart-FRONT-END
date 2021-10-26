@@ -40,17 +40,11 @@ const retrieveAPIData = async(path, queryParam = "") => {
             },
         })
 
-        if (response.ok) {
-        
-            const data = await response.json()
-            console.log("Response status is: ", response.status)
-            console.log("Response data is: " , data)
+        const data = await response.json()
+        console.log("Response status is: ", response.status)
+        console.log("Response data is: " , data)
 
-            return data
-        
-        } else {
-            console.log("GET Response its NOT ok")
-        }
+        return data
 
     } catch (error) {
         console.log("ERROR from retrieveAPIData: ", error)
@@ -79,48 +73,40 @@ const postAPIData = async(path, postData) => {
         })
   
         console.log("postResponse Fetch in progress ....")
-        //if (postResponse.ok) {  // No hay un issue aquí ??
 
         const dataResult = await postResponse.json()
         console.log("Response status is: ", postResponse.status)
         console.log("Response data is: " , dataResult)
 
-            //dataResult["status"] = postResponse.statusText // No hay un issue aquí ??
-
         return dataResult
-
-        //} else {
-            console.log("POST Response its NOT ok", postResponse.statusText)
-        //}
 
     } catch (error) {
         console.log("Error from postAPIData: ", error)
-        console.log("postResponse Status: ", postResponse.statusText)
+        return false
     }
 }
 
 
-function createAlertMsgItem(){
+function createAlertMsgItem(msgText){
     
-    myMsgItem = document.createElement("div")
-    myMsgItem.innerHTML = 
+    //myMsgItem = document.createElement("div")
+    myContainerMsg.innerHTML = 
     `<div class="alert alert-primary d-flex align-items-center" role="alert">
         <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:">
             <use xlink:href="#exclamation-triangle-fill" />
         </svg>
         <div>
-            An example warning alert with an icon
+            ${msgText}
         </div>
     </div>`
 
-    myContainerMsg.append(myMsgItem)
 }
 
 
 function createSucessMsgItem(msgText){
 
-    myMsgItem = document.createElement("div")
-    myMsgItem.innerHTML = 
+    //myMsgItem = document.createElement("div")
+    myContainerMsg.innerHTML = 
     `<div class="alert alert-success d-flex align-items-center" role="alert">
         <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
             <use xlink:href="#check-circle-fill" />
@@ -129,8 +115,6 @@ function createSucessMsgItem(msgText){
             ${msgText}
         </div>
     </div>`
-
-    myContainerMsg.append(myMsgItem)
 
 }
 
@@ -179,18 +163,17 @@ function printShoppingList(){
 
 const retrieveUserPO = async() => {
 
-    try{
+    jobResponse = await retrieveAPIData("api/users/purchase_order/", `?ordering=-id&search=${localStorage.userID}`)
+    
+    if (jobResponse.length > 0){
 
-        jobResponse = await retrieveAPIData("api/users/purchase_order/", `?ordering=-id&search=${localStorage.userID}`)
         localStorage.setItem("userJobID", jobResponse[0].id)
-        
-        createSucessMsgItem(`Retrieved PO with Job Id is: ${localStorage.userJobID}`)
-
-    } catch (error) {
-        console.log("retrieveUserPO() Error: ", console.error())
-        createAlertMsgItem(`Retrieve PO Error is: ${error.message}`)
-    }    
-
+        createSucessMsgItem(`Retrieved PO with Job Id is: ${localStorage.userJobID}`) 
+    
+    } else {
+        createAlertMsgItem("Retrieved User PO on hold")
+    }
+    
 }
 
 
@@ -198,61 +181,48 @@ const generateUserPO = async() => {
 
     localStorage.setItem("POStatus","Launched")
 
-    try{
-
-        let myJSonJob = {
-            user_profile: parseInt(localStorage.userID),
-            user_job_status: 1 
-        }
-
-        jobResponse = await postAPIData("api/users/purchase_order/generate_job/", myJSonJob)
-        console.log("generateUserPO() Status: ", jobResponse.status)
-
-        if(jobResponse.length > 0){
-
-            localStorage.setItem("userJobID", jobResponse.id)
-            createSucessMsgItem(`Generated PO with Job Id is: ${localStorage.userJobID}`)
-
-        } else {
-            console.log("generateUserPO() Status is not OK")
-            createAlertMsgItem("Response status is not OK")
-        }
-
-    } catch (error) {
-        console.log("generateUserPO() Error: ", error)
-        createAlertMsgItem(error.message)
+    let myJSonJob = {
+        user_profile: parseInt(localStorage.userID),
+        user_job_status: 1 
     }
+    
+    jobResponse = await postAPIData("api/users/purchase_order/generate_job/", myJSonJob)
+    
+    if(jobResponse.length > 0){
+    
+        localStorage.setItem("userJobID", jobResponse.id)
+        createSucessMsgItem(`Generated PO with Job Id is: ${localStorage.userJobID}`)
+
+        return true
+    
+    } else {
+    
+        console.log("generateUserPO() Status is not OK")
+        createAlertMsgItem("Response status is not OK")
+
+        return false
+    
+    }
+
 }
 
 
 window.addEventListener("load", (event) => {
 
-    event.preventDefault()
+    myCatalog = JSON.parse(localStorage.catalog)
+    myShoppingCart = JSON.parse(localStorage.ShoppingCart)
+    printShoppingList()
+    
+    if(!localStorage.userJobID && !localStorage.POStatus){
+        generateUserPO()
 
-    try{
-        myCatalog = JSON.parse(localStorage.catalog)
-        myShoppingCart = JSON.parse(localStorage.ShoppingCart)
-    
-        printShoppingList()
-    
-    
-        if(!localStorage.userJobID && !localStorage.POStatus){
-    
-            generateUserPO()
-    
-        } else if (!localStorage.userJobID && localStorage.POStatus == "Launched") {
-            
-            retrieveUserPO()
-        
-        } else if (localStorage.userJobID && localStorage.POStatus) {
-    
-            createSucessMsgItem(`Stored PO Job Id is: ${localStorage.userJobID}`)
-    
-        }
-    
-    } catch (error) {
-        console.log("Window Error Messagage: ", error)
-    }    
+    } else if (!localStorage.userJobID && localStorage.POStatus == "Launched") {
+        retrieveUserPO()
+
+    } else if (localStorage.userJobID && localStorage.POStatus) {
+        createSucessMsgItem(`Stored PO Job Id is: ${localStorage.userJobID}`)
+
+    }
 
 })
 
@@ -260,7 +230,7 @@ window.addEventListener("load", (event) => {
 // Algorithm
 
 // Load data from storage
-// prind data into table
+// print data into table
 // Confirm and generate PO job id
 // retrieve PO job id
 // insert job id into shopping_cart json
