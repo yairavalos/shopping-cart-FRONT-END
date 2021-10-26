@@ -89,7 +89,6 @@ const postAPIData = async(path, postData) => {
 
 function createAlertMsgItem(msgText){
     
-    //myMsgItem = document.createElement("div")
     myContainerMsg.innerHTML = 
     `<div class="alert alert-primary d-flex align-items-center" role="alert">
         <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:">
@@ -105,7 +104,6 @@ function createAlertMsgItem(msgText){
 
 function createSucessMsgItem(msgText){
 
-    //myMsgItem = document.createElement("div")
     myContainerMsg.innerHTML = 
     `<div class="alert alert-success d-flex align-items-center" role="alert">
         <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">

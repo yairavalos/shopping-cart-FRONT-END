@@ -2,7 +2,7 @@
 // Variables Declaration that are Global
 const API_URL = "http://localhost:8000/";
 let myGrandTotal = 0
-let jobResponse = []
+let bomResponse = []
 
 // Local Storage Retrieve
 let myCatalog = JSON.parse(localStorage.catalog)
@@ -90,27 +90,24 @@ const postAPIData = async(path, postData) => {
 }
 
 
-function createAlertMsgItem(){
-    
-    myMsgItem = document.createElement("div")
-    myMsgItem.innerHTML = 
+function createAlertMsgItem(msgText){
+
+    myContainerMsg.innerHTML = 
     `<div class="alert alert-primary d-flex align-items-center" role="alert">
         <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:">
             <use xlink:href="#exclamation-triangle-fill" />
         </svg>
         <div>
-            An example warning alert with an icon
+            ${msgText}
         </div>
     </div>`
 
-    myContainerMsg.append(myMsgItem)
 }
 
 
 function createSucessMsgItem(msgText){
 
-    myMsgItem = document.createElement("div")
-    myMsgItem.innerHTML = 
+    myContainerMsg.innerHTML = 
     `<div class="alert alert-success d-flex align-items-center" role="alert">
         <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
             <use xlink:href="#check-circle-fill" />
@@ -119,8 +116,6 @@ function createSucessMsgItem(msgText){
             ${msgText}
         </div>
     </div>`
-
-    myContainerMsg.append(myMsgItem)
 
 }
 
@@ -186,17 +181,21 @@ function printShoppingList(){
 
 const retrieveUserBOM = async() => {
 
-    try{
+    bomResponse = await retrieveAPIData("api/users/purchase_order/", `?ordering=-id&search=${localStorage.userID}`)
+    localStorage.setItem("userJobID", jobResponse[0].id)
 
-        bomResponse = await retrieveAPIData("api/users/purchase_order/", `?ordering=-id&search=${localStorage.userID}`)
-        localStorage.setItem("userJobID", jobResponse[0].id)
+    if(bomResponse.length > 0){
         
         createSucessMsgItem(`Retrieved PO with Job Id is: ${localStorage.userJobID}`)
+        return true
 
-    } catch (error) {
+    } else {
+
         console.log("retrieveUserPO() Error: ", console.error())
         createAlertMsgItem(`Retrieve PO Error is: ${error.message}`)
-    }    
+
+        return false
+    }
 
 }
 
@@ -214,7 +213,7 @@ const generateUserBOM = async() => {
     
         bomResponse = await postAPIData("api/users/shopping_cart/generate_bom/", myShoppingCart)
 
-        if(!bomResponse == false){
+        if(bomResponse.length > 0){
             createSucessMsgItem(`Generated PO with Job Id is: ${localStorage.userJobID} with ${ShoppingCart.length}`)
             return true
 
@@ -242,10 +241,12 @@ window.addEventListener("load", (event) => {
         statusPO = generateUserBOM()
     }
 
-    if(!statusPO){
-        createPOHeader()
-        printShoppingList()
+    if(!statusPO){ 
+        setTimeout(()=>{retrieveUserBOM()},900)
     }
+
+    createPOHeader()
+    printShoppingList()
 
 })
 
