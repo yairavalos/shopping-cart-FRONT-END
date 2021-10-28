@@ -1,6 +1,8 @@
 // Global Variables
 const API_URL = "http://localhost:8000/";
 
+let postResponse = ""
+
 // DOM Manipulation
 
 
@@ -49,23 +51,22 @@ const createAPIData2 = (requestPath, payload) => {
         headers:{"Content-Type": "application/json; charset=UTF-8"}
     })
     .then(response => {
-        return response.json()
+        return response.text()
     })
-    .then(responseData => {
-        console.log(responseData)
+    .then((responseData) => {
+        console.log("createAPIData2() result: ", responseData)
     })
-
 
 }
 
 
 // Processing Functions
 
-function postDataFunction(){
+function postDataFunction(dataInt1, dataInt2){
 
     let jsonData = {
-        "user_profile": 3,
-        "user_job_status": 1
+        "user_profile": dataInt1,
+        "user_job_status": dataInt2
     }
 
     const postResponse = createAPIData2("http://localhost:8000/api/users/purchase_order/generate_job/", jsonData)
