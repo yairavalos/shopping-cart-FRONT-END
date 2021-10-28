@@ -48,14 +48,28 @@ const createAPIData2 = (requestPath, payload) => {
     fetch(requestPath,{
         method:"POST",
         body: JSON.stringify(payload),
-        headers:{"Content-Type": "application/json; charset=UTF-8"}
+        headers:{"Content-Type": "application/json;charset=UTF-8"}
     })
     .then(response => {
         return response.text()
     })
-    .then((responseData) => {
-        console.log("createAPIData2() result: ", responseData)
+    .catch((error)=>{"createAPIData Error: ", console.log(error)})
+
+}
+
+const createAPIData3 = async (requestPath, payload) => {
+
+    const postResponse = await fetch(requestPath, {
+        method: "POST",
+        headers: {
+            "Content-Type":"application/json;charset=UTF-8"
+        },
+        body: JSON.stringify(payload)
     })
+
+    let jsonResponse = await postResponse.json()
+    
+    return jsonResponse
 
 }
 
@@ -69,10 +83,10 @@ function postDataFunction(dataInt1, dataInt2){
         "user_job_status": dataInt2
     }
 
-    const postResponse = createAPIData2("http://localhost:8000/api/users/purchase_order/generate_job/", jsonData)
-    console.log("postDataFunction() result ", postResponse)
-
-    return postResponse
+    let postResponse = createAPIData3("http://localhost:8000/api/users/purchase_order/generate_job/", jsonData)
+    postResponse.then((jsonResponse)=>{console.log("postDataFunction() result: ", jsonResponse)})
+    postResponse.then((jsonResponse)=>{localStorage.setItem("jsonResponse",JSON.stringify(jsonResponse))})
+    postResponse.catch((err)=>{console.log("postDataFunction() error: ", err)})
 
 }
 
